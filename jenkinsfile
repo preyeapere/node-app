@@ -1,0 +1,32 @@
+pipeline{
+    agent any
+    stages{
+         stage("GitHub checkout") {
+            steps {
+                script {
+ 
+                    git branch: 'main', url: 'https://github.com/preyeapere/node-app.git' 
+                }
+            }
+        }
+        stage("Build docker image"){
+            steps{
+                sh 'printenv'
+                sh 'git version'
+                sh 'docker build . -t preyeapere/imag1.0'
+            }
+        }
+         stage("push image to DockerHub"){
+            steps{
+
+               script {
+                  
+                 withCredentials([string(credentialsId: 'dockerID', variable: 'dockerID')]) {
+                    sh 'docker login -u preyeapere -p ${dockerID}'
+            }
+              sh 'docker push preyeapere/imag1.0:latest'
+            }
+        }
+    }
+    }
+}
