@@ -12,4 +12,4 @@ app.get("/", (req, res) => {
   
   app.listen(5007, () => {
     console.log("server is running and connected .....");
-  });
+  })
